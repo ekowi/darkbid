@@ -1,0 +1,79 @@
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+export enum Phase { BIDDING, SETTLED }
+
+export ledger phase: Phase;
+
+export ledger commit0: Bytes<32>;
+export ledger commit1: Bytes<32>;
+export ledger commit2: Bytes<32>;
+export ledger winnerIndex: Uint<8>;
+export ledger clearingPrice: Uint<64>;
+
+constructor() {
+  phase = Phase.BIDDING;
+  winnerIndex = 0;
+  clearingPrice = 0;
+}
+
+export circuit ping(): [] {
+  assert(phase == Phase.BIDDING, "Auction closed");
+}
+export circuit commitBid(bid: Uint<64>, salt: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([
+    pad(32, "darkbid:commit:"),
+    salt,
+    bid as Field as Bytes<32>
+  ]);
+}
+
+export circuit sealBid0(bid: Uint<64>, salt: Bytes<32>): [] {
+  assert(phase == Phase.BIDDING, "Auction closed");
+  commit0 = disclose(commitBid(bid, salt));
+}
+
+export circuit sealBid1(bid: Uint<64>, salt: Bytes<32>): [] {
+  assert(phase == Phase.BIDDING, "Auction closed");
+  commit1 = disclose(commitBid(bid, salt));
+}
+
+export circuit sealBid2(bid: Uint<64>, salt: Bytes<32>): [] {
+  assert(phase == Phase.BIDDING, "Auction closed");
+  commit2 = disclose(commitBid(bid, salt));
+}
+
+
+export circuit settle(
+  winner: Uint<8>,
+  price:  Uint<64>,
+  bid0: Uint<64>, salt0: Bytes<32>,
+  bid1: Uint<64>, salt1: Bytes<32>,
+  bid2: Uint<64>, salt2: Bytes<32>
+): [] {
+  assert(phase == Phase.BIDDING, "Already settled");
+
+  // (1) semua commitment terbuka benar
+  assert(commit0 == commitBid(bid0, salt0), "commit0 does not open");
+  assert(commit1 == commitBid(bid1, salt1), "commit1 does not open");
+  assert(commit2 == commitBid(bid2, salt2), "commit2 does not open");
+
+  // (2) tidak ada bid yang lebih tinggi
+  assert(price >= bid0, "a higher bid exists");
+  assert(price >= bid1, "a higher bid exists");
+  assert(price >= bid2, "a higher bid exists");
+
+  // (3) harga = bid pemenang
+  assert(
+    (winner == 0 && price == bid0) ||
+    (winner == 1 && price == bid1) ||
+    (winner == 2 && price == bid2),
+    "price does not match winner bid"
+  );
+
+  // (4) HANYA ini yang dibuka
+  winnerIndex   = disclose(winner);
+  clearingPrice = disclose(price);
+  phase = Phase.SETTLED;
+}
