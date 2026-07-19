@@ -1,2 +1,5 @@
 node_modules/
 dist/
+managed/
+src/managed/
+contracts/managed/
