@@ -4,7 +4,7 @@
 
 Built for the Midnight Hackathon (July 2026).
 
-📺 **Demo video:** `<link>` · 🎯 **Track:** DeFi
+📺 **Demo video:** [link](https://youtu.be/a0jbk-Dufvw) · 🎯 **Track:** DeFi
 
 ---
 
