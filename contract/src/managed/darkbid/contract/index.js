@@ -15,29 +15,27 @@ const _descriptor_2 = new __compactRuntime.CompactTypeUnsignedInteger(1844674407
 
 const _descriptor_3 = new __compactRuntime.CompactTypeUnsignedInteger(255n, 1);
 
-const _descriptor_4 = new __compactRuntime.CompactTypeVector(3, _descriptor_1);
-
-const _descriptor_5 = __compactRuntime.CompactTypeBoolean;
+const _descriptor_4 = __compactRuntime.CompactTypeBoolean;
 
 class _Either_0 {
   alignment() {
-    return _descriptor_5.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()));
+    return _descriptor_4.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()));
   }
   fromValue(value_0) {
     return {
-      is_left: _descriptor_5.fromValue(value_0),
+      is_left: _descriptor_4.fromValue(value_0),
       left: _descriptor_1.fromValue(value_0),
       right: _descriptor_1.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_5.toValue(value_0.is_left).concat(_descriptor_1.toValue(value_0.left).concat(_descriptor_1.toValue(value_0.right)));
+    return _descriptor_4.toValue(value_0.is_left).concat(_descriptor_1.toValue(value_0.left).concat(_descriptor_1.toValue(value_0.right)));
   }
 }
 
-const _descriptor_6 = new _Either_0();
+const _descriptor_5 = new _Either_0();
 
-const _descriptor_7 = new __compactRuntime.CompactTypeUnsignedInteger(340282366920938463463374607431768211455n, 16);
+const _descriptor_6 = new __compactRuntime.CompactTypeUnsignedInteger(340282366920938463463374607431768211455n, 16);
 
 class _ContractAddress_0 {
   alignment() {
@@ -53,7 +51,7 @@ class _ContractAddress_0 {
   }
 }
 
-const _descriptor_8 = new _ContractAddress_0();
+const _descriptor_7 = new _ContractAddress_0();
 
 export class Contract {
   witnesses;
@@ -103,21 +101,21 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('sealBid0',
                                      'argument 1 (as invoked from Typescript)',
-                                     'darkbid.compact line 32 char 1',
+                                     'darkbid.compact line 28 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(bid_0) === 'bigint' && bid_0 >= 0n && bid_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('sealBid0',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'darkbid.compact line 32 char 1',
+                                     'darkbid.compact line 28 char 1',
                                      'Uint<0..18446744073709551616>',
                                      bid_0)
         }
         if (!(salt_0.buffer instanceof ArrayBuffer && salt_0.BYTES_PER_ELEMENT === 1 && salt_0.length === 32)) {
           __compactRuntime.typeError('sealBid0',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'darkbid.compact line 32 char 1',
+                                     'darkbid.compact line 28 char 1',
                                      'Bytes<32>',
                                      salt_0)
         }
@@ -148,21 +146,21 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('sealBid1',
                                      'argument 1 (as invoked from Typescript)',
-                                     'darkbid.compact line 37 char 1',
+                                     'darkbid.compact line 33 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(bid_0) === 'bigint' && bid_0 >= 0n && bid_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('sealBid1',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'darkbid.compact line 37 char 1',
+                                     'darkbid.compact line 33 char 1',
                                      'Uint<0..18446744073709551616>',
                                      bid_0)
         }
         if (!(salt_0.buffer instanceof ArrayBuffer && salt_0.BYTES_PER_ELEMENT === 1 && salt_0.length === 32)) {
           __compactRuntime.typeError('sealBid1',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'darkbid.compact line 37 char 1',
+                                     'darkbid.compact line 33 char 1',
                                      'Bytes<32>',
                                      salt_0)
         }
@@ -193,21 +191,21 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('sealBid2',
                                      'argument 1 (as invoked from Typescript)',
-                                     'darkbid.compact line 42 char 1',
+                                     'darkbid.compact line 38 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(bid_0) === 'bigint' && bid_0 >= 0n && bid_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('sealBid2',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'darkbid.compact line 42 char 1',
+                                     'darkbid.compact line 38 char 1',
                                      'Uint<0..18446744073709551616>',
                                      bid_0)
         }
         if (!(salt_0.buffer instanceof ArrayBuffer && salt_0.BYTES_PER_ELEMENT === 1 && salt_0.length === 32)) {
           __compactRuntime.typeError('sealBid2',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'darkbid.compact line 42 char 1',
+                                     'darkbid.compact line 38 char 1',
                                      'Bytes<32>',
                                      salt_0)
         }
@@ -244,63 +242,63 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('settle',
                                      'argument 1 (as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(winner_0) === 'bigint' && winner_0 >= 0n && winner_0 <= 255n)) {
           __compactRuntime.typeError('settle',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Uint<0..256>',
                                      winner_0)
         }
         if (!(typeof(price_0) === 'bigint' && price_0 >= 0n && price_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('settle',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Uint<0..18446744073709551616>',
                                      price_0)
         }
         if (!(typeof(bid0_0) === 'bigint' && bid0_0 >= 0n && bid0_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('settle',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Uint<0..18446744073709551616>',
                                      bid0_0)
         }
         if (!(salt0_0.buffer instanceof ArrayBuffer && salt0_0.BYTES_PER_ELEMENT === 1 && salt0_0.length === 32)) {
           __compactRuntime.typeError('settle',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Bytes<32>',
                                      salt0_0)
         }
         if (!(typeof(bid1_0) === 'bigint' && bid1_0 >= 0n && bid1_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('settle',
                                      'argument 5 (argument 6 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Uint<0..18446744073709551616>',
                                      bid1_0)
         }
         if (!(salt1_0.buffer instanceof ArrayBuffer && salt1_0.BYTES_PER_ELEMENT === 1 && salt1_0.length === 32)) {
           __compactRuntime.typeError('settle',
                                      'argument 6 (argument 7 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Bytes<32>',
                                      salt1_0)
         }
         if (!(typeof(bid2_0) === 'bigint' && bid2_0 >= 0n && bid2_0 <= 18446744073709551615n)) {
           __compactRuntime.typeError('settle',
                                      'argument 7 (argument 8 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Uint<0..18446744073709551616>',
                                      bid2_0)
         }
         if (!(salt2_0.buffer instanceof ArrayBuffer && salt2_0.BYTES_PER_ELEMENT === 1 && salt2_0.length === 32)) {
           __compactRuntime.typeError('settle',
                                      'argument 8 (argument 9 as invoked from Typescript)',
-                                     'darkbid.compact line 48 char 1',
+                                     'darkbid.compact line 44 char 1',
                                      'Bytes<32>',
                                      salt2_0)
         }
@@ -477,8 +475,10 @@ export class Contract {
       currentZswapLocalState: context.currentZswapLocalState
     }
   }
-  _persistentHash_0(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_4, value_0);
+  _persistentCommit_0(value_0, rand_0) {
+    const result_0 = __compactRuntime.persistentCommit(_descriptor_2,
+                                                       value_0,
+                                                       rand_0);
     return result_0;
   }
   _ping_0(context, partialProofData) {
@@ -500,11 +500,7 @@ export class Contract {
     return [];
   }
   _commitBid_0(bid_0, salt_0) {
-    return this._persistentHash_0([new Uint8Array([100, 97, 114, 107, 98, 105, 100, 58, 99, 111, 109, 109, 105, 116, 58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-                                   salt_0,
-                                   __compactRuntime.convertFieldToBytes(32,
-                                                                        bid_0,
-                                                                        'darkbid.compact line 28 char 5')]);
+    return this._persistentCommit_0(bid_0, salt_0);
   }
   _sealBid0_0(context, partialProofData, bid_0, salt_0) {
     __compactRuntime.assert(_descriptor_0.fromValue(__compactRuntime.queryLedgerState(context,

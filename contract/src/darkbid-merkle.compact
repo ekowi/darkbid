@@ -1,0 +1,81 @@
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+// DarkBid v2 — sealed-bid auction dengan bidder DINAMIS lewat Merkle tree.
+// DIVERIFIKASI terhadap docs resmi Midnight (Kapa MCP).
+// Seal: tiap bidder satu tx (tak terbatas s/d 2^10). Settle: optimistic-challenge.
+
+export enum Phase { BIDDING, CHALLENGE, FINALIZED }
+
+// HistoricMerkleTree menyimpan root-root lama -> membership proof tetap valid
+// setelah insert berikutnya. depth 10 -> s/d 1024 bidder.
+export ledger bids: HistoricMerkleTree<10, Bytes<32>>;
+
+export ledger phase: Phase;
+export ledger topBid: Uint<64>;      // bid tertinggi saat ini (publik = harga first-price)
+export ledger topCommit: Bytes<32>;  // commitment pemimpin saat ini
+export ledger deadline: Uint<64>;    // block time (detik) saat jendela tantangan tutup
+
+constructor() {
+  phase = Phase.BIDDING;
+  topBid = 0;
+  deadline = 0;
+}
+
+// Witness: cari Merkle path untuk sebuah commitment dari pohon on-chain.
+// Diimplementasi di TypeScript via ledger.bids.findPathForLeaf(commitment).
+witness findBidPath(commitment: Bytes<32>): MerkleTreePath<10, Bytes<32>>;
+
+// Commitment = persistentCommit(bid, salt): hiding + binding, tak butuh disclose.
+export circuit commitBid(bid: Uint<64>, salt: Bytes<32>): Bytes<32> {
+  return persistentCommit<Uint<64>>(bid, salt);
+}
+
+// ---------- FASE 1: seal DINAMIS ----------
+// Tiap bidder memanggil ini sekali. Tak terbatas.
+// CATATAN: MerkleTree.insert adalah pengecualian yang TIDAK mengungkap item -> tanpa disclose.
+export circuit sealBid(bid: Uint<64>, salt: Bytes<32>): [] {
+  assert(phase == Phase.BIDDING, "bidding closed");
+  bids.insert(commitBid(bid, salt));
+}
+
+// ---------- FASE 2: tutup bidding + klaim pemimpin awal ----------
+export circuit openSettlement(
+  bid: Uint<64>,
+  salt: Bytes<32>,
+  challengeDeadline: Uint<64>
+): [] {
+  assert(phase == Phase.BIDDING, "already settling");
+  const c = commitBid(bid, salt);
+  const path = findBidPath(c);
+  assert(path.leaf == c, "path does not open to this bid");
+  assert(bids.checkRoot(disclose(merkleTreePathRoot<10, Bytes<32>>(path))), "not a member");
+  const dl = disclose(challengeDeadline);
+  assert(blockTimeLt(dl), "deadline must be in the future");
+  topBid = disclose(bid);
+  topCommit = disclose(c);
+  deadline = dl;
+  phase = Phase.CHALLENGE;
+}
+
+// ---------- FASE 3: tantangan ----------
+// Siapa pun dengan bid lebih tinggi yang juga anggota pohon merebut kepemimpinan.
+export circuit challenge(bid: Uint<64>, salt: Bytes<32>): [] {
+  assert(phase == Phase.CHALLENGE, "not in challenge phase");
+  assert(blockTimeLt(deadline), "challenge window closed");
+  const c = commitBid(bid, salt);
+  const path = findBidPath(c);
+  assert(path.leaf == c, "path does not open to this bid");
+  assert(bids.checkRoot(disclose(merkleTreePathRoot<10, Bytes<32>>(path))), "not a member");
+  assert(bid > topBid, "bid is not higher than current top");
+  topBid = disclose(bid);
+  topCommit = disclose(c);
+}
+
+// ---------- FASE 4: finalisasi ----------
+export circuit finalize(): [] {
+  assert(phase == Phase.CHALLENGE, "not in challenge phase");
+  assert(blockTimeGte(deadline), "challenge window still open");
+  phase = Phase.FINALIZED;
+}
