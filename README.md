@@ -99,10 +99,12 @@ Sealed-bid on-chain auctions exist — ENS used commit-reveal (with a public rev
 ## Repository layout
 
 ```
-contracts/
-  darkbid.compact          Core 3-bidder sealed-bid contract
-  darkbid-merkle.compact   Merkle v2 (dynamic bidders, optimistic challenge)
-  src/                     Unit tests + witnesses (in-process)
+contract/
+  src/darkbid.compact          Core 3-bidder sealed-bid contract
+  src/darkbid-merkle.compact   Merkle v2 (dynamic bidders, optimistic challenge)
+  src/witnesses.ts             Witness implementations
+  src/test/darkbid.test.ts     In-process unit tests (vitest, no proof server)
+  package.json
 onchain/                   On-chain harness (runs on the Midnight example scaffold)
   darkbid.ts               Compiled-contract wrapper (core)
   darkbid-merkle.ts        Compiled-contract wrapper + findBidPath witness (Merkle)
@@ -118,7 +120,7 @@ onchain/                   On-chain harness (runs on the Midnight example scaffo
 
 **Unit tests (fast, no blockchain):**
 ```bash
-cd contracts
+cd contract
 compact compile src/darkbid.compact src/managed/darkbid
 npm test          # 5/5
 ```
@@ -131,6 +133,7 @@ git clone https://github.com/midnightntwrk/example-hello-world
 cd example-hello-world
 # copy the files from onchain/ into this project (contracts/ + src/test/ + scripts/)
 compact compile contracts/darkbid-merkle.compact contracts/managed/darkbid-merkle
+compact compile contracts/darkbid.compact contracts/managed/darkbid
 yarn env:up                                                     # proof server + node + indexer
 MIDNIGHT_NETWORK=local yarn test src/test/darkbid.test.ts       # core, on-chain
 MIDNIGHT_NETWORK=local yarn test src/test/darkbid-merkle-m3.test.ts  # full challenge flow
